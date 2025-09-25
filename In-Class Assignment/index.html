@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .grade-input {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        label {
+            font-weight: bold;
+            flex: 1;
+        }
+        input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Final Grade Calculator</h1>
+        
+        <div class="grade-input">
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" placeholder="Enter name">
+        </div>
+        
+        <div class="grade-input">
+            <label for="test1">Test 1 (25%):</label>
+            <input type="number" id="test1" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <div class="grade-input">
+            <label for="test2">Test 2 (30%):</label>
+            <input type="number" id="test2" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <div class="grade-input">
+            <label for="project1">Project 1 (1%):</label>
+            <input type="number" id="project1" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <div class="grade-input">
+            <label for="project2">Project 2 (4%):</label>
+            <input type="number" id="project2" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <div class="grade-input">
+            <label for="project3">Project 3 (15%):</label>
+            <input type="number" id="project3" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <div class="grade-input">
+            <label for="assignment">Assignment Score (25%):</label>
+            <input type="number" id="assignment" min="0" max="100" placeholder="0-100">
+        </div>
+        
+        <button onclick="calculateFinalGrade()">Calculate Final Grade</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        function calculateFinalGrade() {
+            // Get input values
+            const studentName = document.getElementById('studentName').value;
+            const test1Score = parseFloat(document.getElementById('test1').value);
+            const test2Score = parseFloat(document.getElementById('test2').value);
+            const project1Score = parseFloat(document.getElementById('project1').value);
+            const project2Score = parseFloat(document.getElementById('project2').value);
+            const project3Score = parseFloat(document.getElementById('project3').value);
+            const assignmentScore = parseFloat(document.getElementById('assignment').value);
+            
+            // Validate inputs
+            if (isNaN(test1Score) || isNaN(test2Score) || isNaN(project1Score) || 
+                isNaN(project2Score) || isNaN(project3Score) || isNaN(assignmentScore)) {
+                alert('Please enter valid scores for all assignments (0-100).');
+                return;
+            }
+            
+            if (test1Score < 0 || test1Score > 100 || test2Score < 0 || test2Score > 100 ||
+                project1Score < 0 || project1Score > 100 || project2Score < 0 || project2Score > 100 ||
+                project3Score < 0 || project3Score > 100 || assignmentScore < 0 || assignmentScore > 100) {
+                alert('All scores must be between 0 and 100.');
+                return;
+            }
+            
+            // Define weights (as decimals)
+            const test1Weight = 0.25;      // 25%
+            const test2Weight = 0.30;      // 30%
+            const project1Weight = 0.01;   // 1%
+            const project2Weight = 0.04;   // 4%
+            const project3Weight = 0.15;   // 15%
+            const assignmentWeight = 0.25; // 25%
+            
+            // Calculate weighted final score
+            const finalScore = (test1Score * test1Weight) + 
+                              (test2Score * test2Weight) + 
+                              (project1Score * project1Weight) + 
+                              (project2Score * project2Weight) + 
+                              (project3Score * project3Weight) + 
+                              (assignmentScore * assignmentWeight);
+            
+            // Round the final score
+            const roundedFinalScore = Math.round(finalScore);
+            
+            // Determine letter grade
+            let letterGrade;
+            if (roundedFinalScore >= 94) {
+                letterGrade = 'A';
+            } else if (roundedFinalScore >= 90) {
+                letterGrade = 'A-';
+            } else if (roundedFinalScore >= 87) {
+                letterGrade = 'B+';
+            } else if (roundedFinalScore >= 84) {
+                letterGrade = 'B';
+            } else if (roundedFinalScore >= 80) {
+                letterGrade = 'B-';
+            } else if (roundedFinalScore >= 77) {
+                letterGrade = 'C+';
+            } else if (roundedFinalScore >= 74) {
+                letterGrade = 'C';
+            } else if (roundedFinalScore >= 70) {
+                letterGrade = 'C-';
+            } else if (roundedFinalScore >= 67) {
+                letterGrade = 'D+';
+            } else if (roundedFinalScore >= 64) {
+                letterGrade = 'D';
+            } else if (roundedFinalScore >= 60) {
+                letterGrade = 'D-';
+            } else {
+                letterGrade = 'F';
+            }
+            
+            // Display result
+            const resultDiv = document.getElementById('result');
+            const displayName = studentName.trim() || 'Student';
+            
+            resultDiv.innerHTML = `
+                <strong>${displayName}</strong><br>
+                Final Score: ${roundedFinalScore}%<br>
+                Letter Grade: ${letterGrade}
+            `;
+            resultDiv.style.display = 'block';
+        }
+        
+        // Allow Enter key to calculate grade
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateFinalGrade();
+            }
+        });
+    </script>
+</body>
+</html>
